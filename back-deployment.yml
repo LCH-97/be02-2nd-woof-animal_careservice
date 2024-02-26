@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      type: backend
+  template:
+    metadata:
+      labels:
+        type: backend
+    spec:
+      containers:
+        - name: container
+          image: jyk147369/back:1.0
+          envFrom:
+            - configMapRef:
+                name: backend-cm
+          ports:
+            - containerPort: 8080
+      terminationGracePeriodSeconds: 5
